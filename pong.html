@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pong game</title>
+    <link href="css/pong.css" rel="stylesheet">
+</head>
+<body>
+    <div id="divTerrain"></div>
+</body>
+<script src="js/game.js"></script>
+<script src="js/game.display.js"></script>
+<script src="js/game.control.js"></script>
+<script src="js/game.keycode.js"></script>
+<script src="js/game.ai.js"></script>
+<script>
+    (function () {
+        let requestAnimId;
+        let initialization = function () {
+            game.init();
+            requestAnimId = window.requestAnimationFrame(main);
+        };
+
+        let main = function() {
+            game.clearLayer(game.playersBallLayer);
+            game.displayPlayers();
+            game.movePlayers();
+            game.moveBall();
+            game.ai.move();
+            game.collideBallWithPlayersAndAction();
+            requestAnimId = window.requestAnimationFrame(main);
+        };
+
+        window.onload = initialization();
+    })();
+</script>
+</html>
