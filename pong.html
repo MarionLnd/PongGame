@@ -6,6 +6,9 @@
     <link href="css/pong.css" rel="stylesheet">
 </head>
 <body>
+    <div id="menu">
+        <input id="startGame" type="button" value="Start Game">
+    </div>
     <div id="divGame"></div>
 </body>
 <script src="js/game.js"></script>
@@ -26,6 +29,9 @@
             game.displayPlayers();
             game.movePlayers();
             game.moveBall();
+            if(game.ball.inGame) {
+                game.lostBall();
+            }
             game.ai.move();
             game.collideBallWithPlayersAndAction();
             requestAnimId = window.requestAnimationFrame(main);

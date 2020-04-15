@@ -11,6 +11,13 @@ game.control = {
         } else if(event.code === game.keycode.KEYUPSTRING) {
             game.playerOne.goUp = true;
         }
+        if(event.code === game.keycode.SPACEBARSSTRING && !game.ball.inGame && game.gameOn) {
+            game.ball.inGame = true;
+            game.ball.sprite.posX = game.playerOne.sprite.posX + game.playerOne.sprite.width;
+            game.ball.sprite.posY = game.playerOne.sprite.posY;
+            game.ball.directionX = 1;
+            game.ball.directionY = 1;
+        }
     },
 
     onKeyUp: function(event) {
@@ -25,18 +32,25 @@ game.control = {
         game.control.controlSystem = "MOUSE";
 
         if(event){
-            this.mousePointer = event.clientY;
+            game.control.mousePointer = event.clientY;
         }
 
-        if(this.mousePointer > game.playerOne.posY) {
+        if(game.control.mousePointer > game.playerOne.sprite.posY) {
             game.playerOne.goDown = true;
             game.playerOne.goUp = false;
-        } else if(this.mousePointer < game.playerOne.posY) {
+        } else if(game.control.mousePointer < game.playerOne.sprite.posY) {
             game.playerOne.goDown = false;
             game.playerOne.goUp = true;
         } else {
             game.playerOne.goDown = false;
-            game.playerOne.goUp = false;
+            game.playerOne.goUp = true;
         }
     },
+
+    onStartGameClickButton: function() {
+        if(!game.gameOn) {
+            game.reinitGame();
+            game.gameOn = true;
+        }
+    }
 };
