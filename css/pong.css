@@ -1,5 +1,18 @@
+@font-face {
+    font-family: 'DS-DIGII';
+    src: url("../font/ds_digital/DS-DIGII.TTF");
+}
+
 #divTerrain {
     margin-left: auto;
     margin-right: auto;
     width: 800px;
+}
+
+#divGame {
+    width: 750px;
+    height: 450px;
+    margin-right: auto;
+    margin-left: auto;
+    position: relative;
 }

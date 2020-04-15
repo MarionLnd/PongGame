@@ -11,10 +11,16 @@ game.control = {
         } else if(event.code === game.keycode.KEYUPSTRING) {
             game.playerOne.goUp = true;
         }
+        if(event.code === game.keycode.SPACEBARSSTRING && !game.ball.inGame && game.gameOn) {
+            game.ball.inGame = true;
+            game.ball.posX = game.playerOne.posX + game.playerOne.width;
+            game.ball.posY = game.playerOne.posY;
+            game.ball.directionX = 1;
+            game.ball.directionY = 1;
+        }
     },
 
     onKeyUp: function(event) {
-        //game.controlSystem = "KEYBOARD";
         if(event.code === game.keycode.KEYUPSTRING) {
             game.playerOne.goDown = false;
         } else if(event.code === game.keycode.KEYDOWNSTRING) {
@@ -40,4 +46,11 @@ game.control = {
             game.playerOne.goUp = false;
         }
     },
+
+    onStartGameClickButton: function() {
+        if(!game.gameOn) {
+            game.reinitGame();
+            game.gameOn = true;
+        }
+    }
 };
