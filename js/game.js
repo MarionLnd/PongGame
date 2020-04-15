@@ -15,6 +15,8 @@ let game = {
     wallSound: null,
     playerSound: null,
 
+    divGame: null,
+
     ball: {
         width: 10,
         height: 10,
@@ -71,17 +73,18 @@ let game = {
     },
 
     init: function () {
+        this.divGame = document.getElementById("divGame");
         // Terrain
         //this.groundLayer = game.display.createLayer("terrain", this.groundWidth, this.groundHeight, document.getElementById("divTerrain"), 0, "#000000", 0, 0);
-        this.groundLayer = game.display.createLayer("terrain", this.groundWidth, this.groundHeight, undefined, 0, "#000000", 0, 0);
+        this.groundLayer = game.display.createLayer("terrain", this.groundWidth, this.groundHeight, this.divGame, 0, "#000000", 0, 0);
         game.display.drawRectangleInLayer(this.groundLayer, this.netWidth, this.groundHeight, this.netColor, this.groundWidth/2 - this.netWidth/2, 0);
 
         // Score
-        this.scoreLayer = game.display.createLayer("score", this.groundWidth, this.groundHeight, undefined, 1, undefined, 0, 0)
+        this.scoreLayer = game.display.createLayer("score", this.groundWidth, this.groundHeight, this.divGame, 1, undefined, 0, 0)
         game.display.drawTextInLayer(this.scoreLayer, "SCORE", "10px Arial", "#FF0000", 10, 10);
 
         // Raquette
-        this.playersBallLayer = game.display.createLayer("joueurSetBalle", this.groundWidth, this.groundHeight, undefined, 2, undefined, 0, 0)
+        this.playersBallLayer = game.display.createLayer("joueurSetBalle", this.groundWidth, this.groundHeight, this.divGame, 2, undefined, 0, 0)
         game.display.drawTextInLayer(this.playersBallLayer, "JOUEURSETBALLE", "10px Arial", "#FF0000", 100, 100);
 
         this.displayScore(0,0);

@@ -14,7 +14,6 @@ game.control = {
     },
 
     onKeyUp: function(event) {
-        //game.controlSystem = "KEYBOARD";
         if(event.code === game.keycode.KEYUPSTRING) {
             game.playerOne.goDown = false;
         } else if(event.code === game.keycode.KEYDOWNSTRING) {
