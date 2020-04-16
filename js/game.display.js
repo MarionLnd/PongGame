@@ -94,7 +94,7 @@ game.display = {
         targetLayer.context2D.fillText(text, x, y);
     },
 
-    drawImageInLayer: function(targetLayer, image, x, y) {
-        targetLayer.context2D.drawImage(image,x ,y);
+    drawImageInLayer: function(targetLayer, image, x, y, width, height) {
+        targetLayer.context2D.drawImage(image,x ,y, width, height);
     }
 };

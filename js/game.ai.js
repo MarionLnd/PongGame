@@ -50,9 +50,9 @@ game.ai =  {
     },
 
     goCenter: function() {
-        if(this.player.sprite.posY + this.player.sprite.height/2 > game.groundHeight/2) {
+        if(this.player.sprite.posY + this.player.sprite.height/2 > game.conf.GROUNDLAYERHEIGHT/2) {
             this.player.sprite.posY--;
-        } else if (this.player.sprite.posY + this.player.sprite.height/2 < game.groundHeight/2) {
+        } else if (this.player.sprite.posY + this.player.sprite.height/2 < game.conf.GROUNDLAYERHEIGHT/2) {
             this.player.sprite.posY++;
         }
     },

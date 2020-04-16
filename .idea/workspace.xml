@@ -4,7 +4,8 @@
     <list default="true" id="4031ee01-19bb-4e6c-9a96-10ff9643c451" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/pong.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/pong.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/game.control.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.control.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/game.ai.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.ai.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/game.display.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.display.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pong.html" beforeDir="false" afterPath="$PROJECT_DIR$/pong.html" afterDir="false" />
     </list>
@@ -31,7 +32,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ZfArpvsoLBDcfxfujcsM7X2Nvc" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -79,7 +82,7 @@
       <workItem from="1586519824010" duration="8828000" />
       <workItem from="1586611210735" duration="10393000" />
       <workItem from="1586650426186" duration="11674000" />
-      <workItem from="1587019829922" duration="5018000" />
+      <workItem from="1587019829922" duration="7099000" />
     </task>
     <servers />
   </component>
@@ -95,6 +98,14 @@
       <screen x="1920" y="0" width="1536" height="824" />
     </state>
     <state x="2369" y="147" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1586519124155" />
+    <state x="28" y="-14" width="1316" height="806" key="dock-window-1" timestamp="1587048178891">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="28" y="-14" width="1316" height="806" key="dock-window-1/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587048178891" />
+    <state x="2312" y="0" width="759" height="824" key="find.popup" timestamp="1587048190366">
+      <screen x="1920" y="0" width="1536" height="824" />
+    </state>
+    <state x="2312" y="0" width="759" height="824" key="find.popup/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587048190366" />
     <state x="2345" y="187" key="run.anything.popup" timestamp="1585221451270">
       <screen x="1920" y="0" width="1536" height="824" />
     </state>

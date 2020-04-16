@@ -1,16 +1,17 @@
 let game = {
-    groundWidth: 700,
-    groundHeight: 400,
     groundColor: "#000000",
-    netWidth: 6,
     netColor: "#FFFFFF",
+
+    devResX: 1920,
+    devResY: 1080,
+    targetResX: null,
+    targetResY: null,
+    ratioResX: null,
+    ratioResY: null,
 
     groundLayer: null,
     scoreLayer: null,
     playersBallLayer: null,
-
-    scorePosPlayer1: 300,
-    scorePosPlayer2: 365,
 
     wallSound: null,
     playerSound: null,
@@ -38,11 +39,11 @@ let game = {
         },
 
         bounce: function(soundToPlay) {
-            if(this.sprite.posX > game.groundWidth || this.sprite.posX < 0){
+            if(this.sprite.posX > game.conf.GROUNDLAYERWIDTH || this.sprite.posX < 0){
                 this.directionX = -this.directionX;
                 soundToPlay.play();
             }
-            if(this.sprite.posY > game.groundHeight || this.sprite.posY < 0) {
+            if(this.sprite.posY > game.conf.GROUNDLAYERHEIGHT || this.sprite.posY < 0) {
                 this.directionY = -this.directionY;
                 soundToPlay.play();
             }
@@ -89,24 +90,27 @@ let game = {
     },
 
     init: function () {
+        this.initScreenRes();
+        this.resizeDisplayData(game.conf, this.ratioResX, this.ratioResY);
+
         this.divGame = document.getElementById("divGame");
         // Terrain
-        this.groundLayer = game.display.createLayer("terrain", this.groundWidth, this.groundHeight, this.divGame, 0, "#000000", 0, 0);
-        game.display.drawRectangleInLayer(this.groundLayer, this.netWidth, this.groundHeight, this.netColor, this.groundWidth/2 - this.netWidth/2, 0);
+        this.groundLayer = game.display.createLayer("terrain", game.conf.GROUNDLAYERWIDTH, game.conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 0, 0);
+        game.display.drawRectangleInLayer(this.groundLayer, game.conf.NETWIDTH, game.conf.GROUNDLAYERHEIGHT, this.netColor, game.conf.GROUNDLAYERWIDTH/2 - game.conf.NETWIDTH/2, 0);
 
         // Score
-        this.scoreLayer = game.display.createLayer("score", this.groundWidth, this.groundHeight, this.divGame, 1, undefined, 0, 0);
+        this.scoreLayer = game.display.createLayer("score", game.conf.GROUNDLAYERWIDTH, game.conf.GROUNDLAYERHEIGHT, this.divGame, 1, undefined, 0, 0);
 
         // Raquette
-        this.playersBallLayer = game.display.createLayer("joueurSetBalle", this.groundWidth, this.groundHeight, this.divGame, 2, undefined, 0, 0);
+        this.playersBallLayer = game.display.createLayer("joueurSetBalle", game.conf.GROUNDLAYERWIDTH, game.conf.GROUNDLAYERHEIGHT, this.divGame, 2, undefined, 0, 0);
 
         this.displayScore(this.playerOne.score,this.playerTwo.score);
 
-        this.ball.sprite = game.display.createSprite(10,10, 200, 200, "./img/ball.png");
+        this.ball.sprite = game.display.createSprite(game.conf.BALLWIDTH,game.conf.BALLHEIGHT, game.conf.BALLPOSX, game.conf.BALLPOSY, "./img/ball.png");
         this.displayBall();
 
-        this.playerOne.sprite = game.display.createSprite(15,70, 30, 200, "./img/playerOne.png");
-        this.playerTwo.sprite = game.display.createSprite(15,70, 650, 200, "./img/playerTwo.png");
+        this.playerOne.sprite = game.display.createSprite(game.conf.PLAYERONEWIDTH,game.conf.PLAYERONEHEIGHT, game.conf.PLAYERONEPOSX, game.conf.PLAYERONEPOSY, "./img/playerOne.png");
+        this.playerTwo.sprite = game.display.createSprite(game.conf.PLAYERTWOWIDTH,game.conf.PLAYERTWOHEIGHT, game.conf.PLAYERTWOPOSX, game.conf.PLAYERTWOPOSY, "./img/playerTwo.png");
         this.displayPlayers();
 
         this.startGameButton = document.getElementById("startGame");
@@ -128,17 +132,17 @@ let game = {
     },
 
     displayScore: function(scorePlayer1, scorePlayer2) {
-        game.display.drawTextInLayer(this.scoreLayer, scorePlayer1, "60px DS-DIGII", "#FFFFFF", this.scorePosPlayer1, 55);
-        game.display.drawTextInLayer(this.scoreLayer, scorePlayer2, "60px DS-DIGII", "#FFFFFF", this.scorePosPlayer2, 55);
+        game.display.drawTextInLayer(this.scoreLayer, scorePlayer1, game.conf.SCOREFONTSIZE + "pt DS-DIGII", "#FFFFFF", game.conf.SCOREPOSXPLAYER1, game.conf.SCOREPOSYPLAYER1);
+        game.display.drawTextInLayer(this.scoreLayer, scorePlayer2, game.conf.SCOREFONTSIZE + "pt DS-DIGII", "#FFFFFF", game.conf.SCOREPOSXPLAYER2, game.conf.SCOREPOSYPLAYER2);
     },
 
     displayBall: function() {
-        game.display.drawImageInLayer(this.playersBallLayer, this.ball.sprite.img, this.ball.sprite.posX, this.ball.sprite.posY);
+        game.display.drawImageInLayer(this.playersBallLayer, this.ball.sprite.img, this.ball.sprite.posX, this.ball.sprite.posY, game.conf.BALLWIDTH, game.conf.BALLHEIGHT);
     },
 
     displayPlayers: function() {
-        game.display.drawImageInLayer(this.playersBallLayer, this.playerOne.sprite.img, this.playerOne.sprite.posX, this.playerOne.sprite.posY);
-        game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.sprite.img, this.playerTwo.sprite.posX, this.playerTwo.sprite.posY);
+        game.display.drawImageInLayer(this.playersBallLayer, this.playerOne.sprite.img, this.playerOne.sprite.posX, this.playerOne.sprite.posY, game.conf.PLAYERONEWIDTH, game.conf.PLAYERONEHEIGHT);
+        game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.sprite.img, this.playerTwo.sprite.posX, this.playerTwo.sprite.posY, game.conf.PLAYERTWOWIDTH, game.conf.PLAYERTWOHEIGHT);
     },
 
     moveBall: function () {
@@ -148,15 +152,16 @@ let game = {
     },
 
     movePlayers: function() {
+        let up;
+        let down;
+        
         if (game.control.controlSystem === "KEYBOARD") {
-            // keyboard control
             if (game.playerOne.goUp && game.playerOne.sprite.posY > 0) {
                 game.playerOne.sprite.posY-=5;
-            } else if (game.playerOne.goDown && game.playerOne.sprite.posY < game.groundHeight - game.playerOne.sprite.height) {
+            } else if (game.playerOne.goDown && game.playerOne.sprite.posY < game.conf.GROUNDLAYERHEIGHT - game.playerOne.sprite.height) {
                 game.playerOne.sprite.posY+=5;
             }
         } else if (game.control.controlSystem === "MOUSE") {
-            // mouse control
             if (game.playerOne.goUp && game.playerOne.sprite.posY > game.control.mousePointer) {
                 game.playerOne.sprite.posY-=5;
             } else if (game.playerOne.goDown && game.playerOne.sprite.posY < game.control.mousePointer) {
@@ -287,6 +292,23 @@ let game = {
 
     clearLayer: function(targetLayer) {
         targetLayer.clear();
+    },
+
+    initScreenRes: function() {
+      this.targetResX = window.screen.availWidth;
+      this.targetResY = window.screen.availHeight;
+      this.ratioResX = this.targetResX/this.devResX;
+      this.ratioResY = this.targetResY/this.devResY;
+    },
+
+    resizeDisplayData: function(object, ratioX, ratioY) {
+        for(let property in object) {
+            if ( property.match(/^.*X.*$/i) || property.match(/^.*WIDTH.*$/i) ) {
+                object[property] = Math.round(object[property] * ratioX);
+            } else {
+                object[property] = Math.round(object[property] * ratioY);
+            }
+        }
     },
 
     initKeyboard: function(onKeyDownFunction, onKeyUpFunction) {
