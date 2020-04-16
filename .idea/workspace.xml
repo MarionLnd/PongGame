@@ -4,8 +4,8 @@
     <list default="true" id="4031ee01-19bb-4e6c-9a96-10ff9643c451" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/pong.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/pong.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/game.ai.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.ai.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/game.display.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.display.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/game.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.conf.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/game.control.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.control.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pong.html" beforeDir="false" afterPath="$PROJECT_DIR$/pong.html" afterDir="false" />
     </list>
@@ -82,7 +82,7 @@
       <workItem from="1586519824010" duration="8828000" />
       <workItem from="1586611210735" duration="10393000" />
       <workItem from="1586650426186" duration="11674000" />
-      <workItem from="1587019829922" duration="7099000" />
+      <workItem from="1587019829922" duration="8772000" />
     </task>
     <servers />
   </component>

@@ -43,7 +43,7 @@ let game = {
                 this.directionX = -this.directionX;
                 soundToPlay.play();
             }
-            if(this.sprite.posY > game.conf.GROUNDLAYERHEIGHT || this.sprite.posY < 0) {
+            if(this.sprite.posY + this.sprite.height > game.conf.GROUNDLAYERHEIGHT || this.sprite.posY < 0) {
                 this.directionY = -this.directionY;
                 soundToPlay.play();
             }
@@ -154,20 +154,29 @@ let game = {
     movePlayers: function() {
         let up;
         let down;
-        
+
         if (game.control.controlSystem === "KEYBOARD") {
-            if (game.playerOne.goUp && game.playerOne.sprite.posY > 0) {
-                game.playerOne.sprite.posY-=5;
-            } else if (game.playerOne.goDown && game.playerOne.sprite.posY < game.conf.GROUNDLAYERHEIGHT - game.playerOne.sprite.height) {
-                game.playerOne.sprite.posY+=5;
+            if (game.playerOne.goUp) {
+                up = true;
+                down = false;
+            } else if (game.playerOne.goDown) {
+                up = false;
+                down = true;
             }
         } else if (game.control.controlSystem === "MOUSE") {
             if (game.playerOne.goUp && game.playerOne.sprite.posY > game.control.mousePointer) {
-                game.playerOne.sprite.posY-=5;
+                up = true;
+                down = false;
             } else if (game.playerOne.goDown && game.playerOne.sprite.posY < game.control.mousePointer) {
-                game.playerOne.sprite.posY+=5;
+                up = false;
+                down = true;
             }
         }
+
+        if ( up && game.playerOne.sprite.posY > 0 )
+            game.playerOne.sprite.posY-=5;
+        else if ( down && game.playerOne.sprite.posY < game.conf.GROUNDLAYERHEIGHT - game.playerOne.sprite.height )
+            game.playerOne.sprite.posY+=5;
     },
 
     collideBallWithPlayersAndAction: function() {
@@ -182,6 +191,8 @@ let game = {
     },
 
     lostBall: function() {
+        console.log(this.playerOne.score);
+        console.log(this.playerTwo.score);
         if(this.ball.lost(this.playerOne)) {
             this.playerTwo.score++;
             if(this.playerTwo.score > 9) {

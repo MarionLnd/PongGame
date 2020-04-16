@@ -31,7 +31,7 @@ game.control = {
     onMouseMove: function(event) {
         if(game.control.controlSystem === "MOUSE") {
             if(event){
-                game.control.mousePointer = event.clientY;
+                game.control.mousePointer = event.clientY - game.conf.MOUSECORRECTIONPOSY;
             }
 
             if(game.control.mousePointer > game.playerOne.sprite.posY) {
