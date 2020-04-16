@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'DS-DIGII';
+    src: url("../font/ds_digital/DS-DIGII.TTF");
+}
+
 #divGame {
     margin-left: auto;
     margin-right: auto;

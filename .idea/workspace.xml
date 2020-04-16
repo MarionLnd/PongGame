@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4031ee01-19bb-4e6c-9a96-10ff9643c451" name="Default Changelist" comment="" />
+    <list default="true" id="4031ee01-19bb-4e6c-9a96-10ff9643c451" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/pong.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/pong.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/game.control.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.control.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pong.html" beforeDir="false" afterPath="$PROJECT_DIR$/pong.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +28,7 @@
         <entry key="$PROJECT_DIR$" value="Dev_continuite_tuto" />
       </map>
     </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ZfArpvsoLBDcfxfujcsM7X2Nvc" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -72,6 +79,7 @@
       <workItem from="1586519824010" duration="8828000" />
       <workItem from="1586611210735" duration="10393000" />
       <workItem from="1586650426186" duration="11674000" />
+      <workItem from="1587019829922" duration="5018000" />
     </task>
     <servers />
   </component>

@@ -4,12 +4,30 @@
     <meta charset="UTF-8">
     <title>Pong game</title>
     <link href="css/pong.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
-<body>
-    <div id="menu">
-        <input id="startGame" type="button" value="Start Game">
+<body class="font-weight-light">
+    <h1 class="text-center">Pong Game</h1>
+    <br>
+    <div class="container">
+            <div id="menuMode" class="border">
+                En quel mode voulez-vous jouer ?
+                <input id="modeIA" class="btn btn-outline-danger font-weight-light" type="button" value="Contre l'IA">
+                <input id="modeOnline" class="btn btn-outline-danger font-weight-light" type="button" value="Multijoueur en ligne">
+            </div>
+        <br>
+            <div id="menuControl" class="border">
+                Comment souhaitez-vous controler la raquette ?
+                <input id="controlMouse" class="btn btn-outline-primary font-weight-light" type="button" value="Avec la souris">
+                <input id="controlKeyboard" class="btn btn-outline-primary font-weight-light" type="button" value="Avec le clavier">
+            </div>
+        <br>
+            <div id="menu" class="border">
+                <input id="startGame" class="btn btn-outline-success font-weight-light" type="button" value="Lancer la partie">
+            </div>
+        <br>
+            <div id="divGame"></div>
     </div>
-    <div id="divGame"></div>
 </body>
 <script src="js/game.js"></script>
 <script src="js/game.display.js"></script>

@@ -19,6 +19,8 @@ let game = {
 
     gameOn: false,
     startGameButton: null,
+    controlMouseButton: null,
+    controlKeyboardButton: null,
 
     ball: {
         sprite: null,
@@ -107,10 +109,15 @@ let game = {
         this.playerTwo.sprite = game.display.createSprite(15,70, 650, 200, "./img/playerTwo.png");
         this.displayPlayers();
 
-        //this.startGameButton = document.getElementById("startGame");
+        this.startGameButton = document.getElementById("startGame");
+        this.controlMouseButton = document.getElementById("controlMouse");
+        this.controlKeyboardButton = document.getElementById("controlKeyboard");
+
         this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);
         this.initMouse(game.control.onMouseMove);
         this.initStartGameClickButton();
+        this.initControlMouseClickButton();
+        this.initControlKeyboardClickButton();
 
         this.wallSound = new Audio("./sound/pingMur.ogg");
         this.playerSound = new Audio("./sound/pingRaquette.ogg");
@@ -121,8 +128,8 @@ let game = {
     },
 
     displayScore: function(scorePlayer1, scorePlayer2) {
-        game.display.drawTextInLayer(this.scoreLayer, scorePlayer1, "60px Arial", "#FFFFFF", this.scorePosPlayer1, 55);
-        game.display.drawTextInLayer(this.scoreLayer, scorePlayer2, "60px Arial", "#FFFFFF", this.scorePosPlayer2, 55);
+        game.display.drawTextInLayer(this.scoreLayer, scorePlayer1, "60px DS-DIGII", "#FFFFFF", this.scorePosPlayer1, 55);
+        game.display.drawTextInLayer(this.scoreLayer, scorePlayer2, "60px DS-DIGII", "#FFFFFF", this.scorePosPlayer2, 55);
     },
 
     displayBall: function() {
@@ -143,9 +150,9 @@ let game = {
     movePlayers: function() {
         if (game.control.controlSystem === "KEYBOARD") {
             // keyboard control
-            if (game.playerOne.sprite.goUp && game.playerOne.sprite.posY > 0) {
+            if (game.playerOne.goUp && game.playerOne.sprite.posY > 0) {
                 game.playerOne.sprite.posY-=5;
-            } else if (game.playerOne.sprite.goDown && game.playerOne.sprite.posY < game.groundHeight - game.playerOne.sprite.height) {
+            } else if (game.playerOne.goDown && game.playerOne.sprite.posY < game.groundHeight - game.playerOne.sprite.height) {
                 game.playerOne.sprite.posY+=5;
             }
         } else if (game.control.controlSystem === "MOUSE") {
@@ -292,7 +299,17 @@ let game = {
     },
 
     initStartGameClickButton: function() {
-        this.startGameButton = document.getElementById("startGame");
-        this.startGameButton.onclick = game.control.onStartGameClickButton();
+        //this.startGameButton = document.getElementById("startGame");
+        this.startGameButton.onclick = game.control.onStartGameClickButton;
+    },
+
+    initControlMouseClickButton: function() {
+        //this.startGameButton = document.getElementById("startGame");
+        this.controlMouseButton.onclick = game.control.onMouseControlClickButton;
+    },
+
+    initControlKeyboardClickButton: function() {
+        //this.startGameButton = document.getElementById("startGame");
+        this.controlKeyboardButton.onclick = game.control.onKeyboardControlClickButton;
     }
 };
