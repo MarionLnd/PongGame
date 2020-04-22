@@ -22,6 +22,14 @@ let game = {
     startGameButton: null,
     controlMouseButton: null,
     controlKeyboardButton: null,
+    iaButton: null,
+    multiplayerButton: null,
+
+    onlineMode: false,
+    iaMode: false,
+
+    winner: "",
+    loser: "",
 
     ball: {
         sprite: null,
@@ -56,9 +64,9 @@ let game = {
 
         lost: function(player) {
             let returnValue = false;
-            if(player.originalPosition === "left" && this.sprite.posX < player.sprite.posX - this.sprite.width) {
+            if(player.originalPosition === "left" && this.sprite.posX < (player.sprite.posX - this.sprite.width)) {
                 returnValue = true;
-            } else if(player.originalPosition === "right" && this.sprite.posX > player.sprite.posX + player.sprite.width) {
+            } else if(player.originalPosition === "right" && this.sprite.posX > (player.sprite.posX + player.sprite.width)) {
                 returnValue = true;
             }
             return returnValue;
@@ -76,7 +84,8 @@ let game = {
         goDown: false,
         originalPosition: "left",
         score: 0,
-        ai: false
+        ai: false,
+        winner: false,
     },
 
     playerTwo: {
@@ -86,7 +95,8 @@ let game = {
         goDown: false,
         originalPosition: "right",
         score: 0,
-        ai: true
+        ai: true,
+        winner: false,
     },
 
     init: function () {
@@ -116,12 +126,16 @@ let game = {
         this.startGameButton = document.getElementById("startGame");
         this.controlMouseButton = document.getElementById("controlMouse");
         this.controlKeyboardButton = document.getElementById("controlKeyboard");
+        this.iaButton = document.getElementById("modeIA");
+        this.multiplayerButton = document.getElementById("modeOnline");
 
         this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);
         this.initMouse(game.control.onMouseMove);
         this.initStartGameClickButton();
         this.initControlMouseClickButton();
         this.initControlKeyboardClickButton();
+        this.initIAClickButton();
+        this.initMultiplayerClickButton();
 
         this.wallSound = new Audio("./sound/pingMur.ogg");
         this.playerSound = new Audio("./sound/pingRaquette.ogg");
@@ -129,6 +143,13 @@ let game = {
         game.ai.setPlayerAndBall(this.playerTwo, this.ball);
 
         this.speedUpBall();
+
+        //socket = io.connect('http://localhost:2222');
+
+        /*let data = {
+            id: socket.id
+        };*/
+        //socket.emit("start", data);
     },
 
     displayScore: function(scorePlayer1, scorePlayer2) {
@@ -174,9 +195,9 @@ let game = {
         }
 
         if ( up && game.playerOne.sprite.posY > 0 )
-            game.playerOne.sprite.posY-=5;
-        else if ( down && game.playerOne.sprite.posY < game.conf.GROUNDLAYERHEIGHT - game.playerOne.sprite.height )
-            game.playerOne.sprite.posY+=5;
+            game.playerOne.sprite.posY-=4;
+        else if ( down && game.playerOne.sprite.posY < (game.conf.GROUNDLAYERHEIGHT - game.playerOne.sprite.height) )
+            game.playerOne.sprite.posY+=4;
     },
 
     collideBallWithPlayersAndAction: function() {
@@ -191,25 +212,29 @@ let game = {
     },
 
     lostBall: function() {
-        console.log(this.playerOne.score);
-        console.log(this.playerTwo.score);
         if(this.ball.lost(this.playerOne)) {
             this.playerTwo.score++;
-            if(this.playerTwo.score > 9) {
+            if(this.playerTwo.score === 9) {
                 this.gameOn = false;
+                game.ball.inGame = false;
+                this.playerTwo.winner = true;
+                this.winner = "Player TWO";
             } else {
                 this.ball.inGame = false;
-                if(this.playerOne.ai) {
+                if(this.playerOne.ai && game.iaMode) {
                     setTimeout(game.ai.startBall(), 3000);
                 }
             }
         } else if(this.ball.lost(this.playerTwo)) {
             this.playerOne.score++;
-            if(this.playerOne.score > 9) {
+            if(this.playerOne.score === 9) {
                 this.gameOn = false;
+                game.ball.inGame = false;
+                this.playerOne.winner = true;
+                this.winner = "Player ONE";
             } else {
                 this.ball.inGame = false;
-                if(this.playerTwo.ai) {
+                if(this.playerTwo.ai && game.iaMode) {
                     setTimeout(game.ai.startBall(), 3000);
                 }
             }
@@ -332,17 +357,22 @@ let game = {
     },
 
     initStartGameClickButton: function() {
-        //this.startGameButton = document.getElementById("startGame");
         this.startGameButton.onclick = game.control.onStartGameClickButton;
     },
 
     initControlMouseClickButton: function() {
-        //this.startGameButton = document.getElementById("startGame");
         this.controlMouseButton.onclick = game.control.onMouseControlClickButton;
     },
 
     initControlKeyboardClickButton: function() {
-        //this.startGameButton = document.getElementById("startGame");
         this.controlKeyboardButton.onclick = game.control.onKeyboardControlClickButton;
+    },
+
+    initIAClickButton: function() {
+        this.iaButton.onclick = game.control.onIAClickButton;
+    },
+
+    initMultiplayerClickButton: function() {
+        this.multiplayerButton.onclick = game.control.onMultiplayerClickButton;
     }
 };

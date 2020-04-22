@@ -42,9 +42,13 @@ game.ai =  {
     },
 
     followBall: function() {
-        if(this.ball.sprite.posY < this.player.sprite.posY + this.player.sprite.height/2) {
+        if(this.ball.sprite.posY < (this.player.sprite.posY + this.player.sprite.height/2)) {
+            /*console.log("posy: " + this.player.sprite.posY);
+            console.log("p.height: " + this.player.sprite.height);
+            console.log("p.height/2: " + this.player.sprite.height/2);
+            console.log("posy + p.height: " + (this.player.sprite.posY - this.player.sprite.height));*/
             this.player.sprite.posY--;
-        } else if(this.ball.sprite.posY > this.player.sprite.posY + this.player.sprite.height/2) {
+        } else if(this.ball.sprite.posY > (this.player.sprite.posY - this.player.sprite.height/2)) {
             this.player.sprite.posY++;
         }
     },
