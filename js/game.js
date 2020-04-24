@@ -31,6 +31,8 @@ let game = {
     winner: "",
     loser: "",
 
+    socket: null,
+
     ball: {
         sprite: null,
         color: "#FFFFFF",
@@ -143,13 +145,6 @@ let game = {
         game.ai.setPlayerAndBall(this.playerTwo, this.ball);
 
         this.speedUpBall();
-
-        //socket = io.connect('http://localhost:2222');
-
-        /*let data = {
-            id: socket.id
-        };*/
-        //socket.emit("start", data);
     },
 
     displayScore: function(scorePlayer1, scorePlayer2) {
@@ -164,6 +159,18 @@ let game = {
     displayPlayers: function() {
         game.display.drawImageInLayer(this.playersBallLayer, this.playerOne.sprite.img, this.playerOne.sprite.posX, this.playerOne.sprite.posY, game.conf.PLAYERONEWIDTH, game.conf.PLAYERONEHEIGHT);
         game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.sprite.img, this.playerTwo.sprite.posX, this.playerTwo.sprite.posY, game.conf.PLAYERTWOWIDTH, game.conf.PLAYERTWOHEIGHT);
+    },
+
+    displayPlayerOne: function(player) {
+        game.display.drawImageInLayer(this.playersBallLayer, this.playerOne.sprite.img, this.playerOne.sprite.posX, this.playerOne.sprite.posY, game.conf.PLAYERONEWIDTH, game.conf.PLAYERONEHEIGHT);
+    },
+
+    displayPlayerTwo: function(player) {
+        game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.sprite.img, this.playerTwo.sprite.posX, this.playerTwo.sprite.posY, game.conf.PLAYERTWOWIDTH, game.conf.PLAYERTWOHEIGHT);
+    },
+
+    displayWinner: function() {
+        game.display.drawTextInLayer(this.playersBallLayer, 'Le gagnant est ' + game.winner, '25pt Arial', "#00BE19", 75,game.conf.GROUNDLAYERHEIGHT/2)
     },
 
     moveBall: function () {
@@ -214,7 +221,7 @@ let game = {
     lostBall: function() {
         if(this.ball.lost(this.playerOne)) {
             this.playerTwo.score++;
-            if(this.playerTwo.score === 9) {
+            if(this.playerTwo.score === 2) {
                 this.gameOn = false;
                 game.ball.inGame = false;
                 this.playerTwo.winner = true;

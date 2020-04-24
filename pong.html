@@ -10,7 +10,7 @@
     <h1 class="text-center">Pong Game</h1>
     <br>
     <div class="container">
-        <div>
+        <div id="description">
             <p>
                 Bienvenue sur le jeu PongGame !
                 Il s'agit d'un jeu de Ping Pong sur navigateur. <br> Vous pouvez choisir de jouer contre l'ordinateur (IA) ou contre un autre joueur en ligne (multijoueur). <br>
@@ -18,19 +18,19 @@
                 Si vous perdez la balle, appuyez sur la touche espace du clavier pour relancer la balle.
             </p>
         </div>
-            <div id="menuMode" class="border">
+            <div id="menuMode" class="">
                 En quel mode voulez-vous jouer ?
                 <input id="modeIA" class="btn btn-outline-danger font-weight-light" type="button" value="Contre l'IA">
                 <input id="modeOnline" class="btn btn-outline-danger font-weight-light" type="button" value="Multijoueur en ligne">
             </div>
         <br>
-            <div id="menuControl" class="border">
+            <div id="menuControl" class="">
                 Comment souhaitez-vous controler la raquette ?
                 <input id="controlMouse" class="btn btn-outline-primary font-weight-light" type="button" value="Avec la souris">
                 <input id="controlKeyboard" class="btn btn-outline-primary font-weight-light" type="button" value="Avec le clavier">
             </div>
         <br>
-            <div id="menu" class="border">
+            <div id="menu" class="">
                 <input id="startGame" class="btn btn-outline-success font-weight-light" type="button" value="Lancer la partie">
             </div>
         <br>
@@ -43,6 +43,7 @@
 <script src="js/game.keycode.js"></script>
 <script src="js/game.ai.js"></script>
 <script src="js/game.conf.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script>
     (function () {
         let requestAnimId;
@@ -52,20 +53,44 @@
             requestAnimId = window.requestAnimationFrame(main);
         };
 
+        let socket = game.socket;
+
         let main = function() {
             game.clearLayer(game.playersBallLayer);
-            game.displayPlayers();
-            game.movePlayers();
-            game.moveBall();
-            if(game.ball.inGame) {
-                game.lostBall();
-            }
-            game.ai.move();
-            game.collideBallWithPlayersAndAction();
+            if(game.iaMode && !game.onlineMode) {
+                console.log("mode ia");
+                game.displayPlayers();
+                game.ai.setPlayerAndBall(game.playerTwo, game.ball);
+
+                game.displayPlayers();
+                game.movePlayers();
+                game.moveBall();
+                if(game.ball.inGame) {
+                    game.lostBall();
+                }
+                game.ai.move();
+                game.collideBallWithPlayersAndAction();
+                if(game.winner !== "" && !game.ball.inGame && !game.gameOn) {
+                    game.playersBallLayer.clear();
+                    game.displayWinner();
+                }
+            }/* else if(game.onlineMode && !game.iaMode) {
+                console.log("mode multijoueur");
+                game.playersBallLayer.clear();
+            }*/
             requestAnimId = window.requestAnimationFrame(main);
         };
 
         window.onload = initialization();
+        
+        if(game.onlineMode && !game.iaMode) {
+            console.log("mode multijoueur");
+            game.playersBallLayer.clear();
+            game.clearLayer(game.scoreLayer);
+            setInterval(() => {
+                socket.emit("gameState", game)
+            }, 1000/60);
+        }
     })();
 </script>
 </html>
