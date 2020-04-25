@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4031ee01-19bb-4e6c-9a96-10ff9643c451" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/express.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/express.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/game.control.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.control.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/game.display.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.display.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pong.html" beforeDir="false" afterPath="$PROJECT_DIR$/pong.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
     </list>
@@ -44,10 +47,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Maaye\Documents\INFORMATIQUE\Université - Cours\MIAGE\M1\TECHNO LOG\PongGame\js" />
       <recent name="C:\Users\Maaye\Documents\INFORMATIQUE\Université - Cours\MIAGE\M1\TECHNO LOG\PongGame" />
       <recent name="C:\Users\Maaye\Documents\INFORMATIQUE\Université - Cours\MIAGE\M1\TECHNO LOG\Pong\sound" />
     </key>
@@ -85,7 +90,9 @@
       <workItem from="1587019829922" duration="9212000" />
       <workItem from="1587171334950" duration="181000" />
       <workItem from="1587316144180" duration="47101000" />
-      <workItem from="1587714846184" duration="9155000" />
+      <workItem from="1587714846184" duration="19972000" />
+      <workItem from="1587772336228" duration="671000" />
+      <workItem from="1587773207384" duration="5457000" />
     </task>
     <servers />
   </component>
@@ -97,14 +104,26 @@
       <screen x="1920" y="0" width="1536" height="824" />
     </state>
     <state x="2143" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587323672699" />
-    <state x="2437" y="202" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1586704095293">
+    <state x="2437" y="202" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1587773465269">
       <screen x="1920" y="0" width="1536" height="824" />
     </state>
-    <state x="2437" y="202" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1586704095293" />
-    <state x="2369" y="147" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1586519124155">
+    <state x="2437" y="202" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587773465269" />
+    <state x="2369" y="147" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1587771884080">
       <screen x="1920" y="0" width="1536" height="824" />
     </state>
-    <state x="2369" y="147" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1586519124155" />
+    <state x="2369" y="147" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587771884080" />
+    <state x="2419" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587774985426">
+      <screen x="1920" y="0" width="1536" height="824" />
+    </state>
+    <state x="2419" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587774985426" />
+    <state x="2469" y="167" key="FileChooserDialogImpl" timestamp="1587762770269">
+      <screen x="1920" y="0" width="1536" height="824" />
+    </state>
+    <state x="2469" y="167" key="FileChooserDialogImpl/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587762770269" />
+    <state x="2197" y="54" key="SettingsEditor" timestamp="1587773173922">
+      <screen x="1920" y="0" width="1536" height="824" />
+    </state>
+    <state x="2197" y="54" key="SettingsEditor/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587773173922" />
     <state x="28" y="-14" width="1316" height="806" key="dock-window-1" timestamp="1587048178891">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

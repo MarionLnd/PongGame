@@ -1,18 +1,20 @@
 game.control = {
     controlSystem: null,
     mousePointer: null,
+    socket: game.socket,
 
+    // TODO: Modifier en fonction du joueur connecté
     onKeyDown: function(event) {
         if(game.control.controlSystem === "KEYBOARD") {
             if(event.code === game.keycode.KEYDOWNSTRING) {
                 game.playerOne.goDown = true;
                 if(game.onlineMode) {
-                    game.socket.emit('moveDown');
+                    socket.emit('move down');
                 }
             } else if(event.code === game.keycode.KEYUPSTRING) {
                 game.playerOne.goUp = true;
                 if(game.onlineMode) {
-                    game.socket.emit('moveUp');
+                    socket.emit('move up');
                 }
             }
         }
@@ -23,11 +25,12 @@ game.control = {
             game.ball.directionX = 1;
             game.ball.directionY = 1;
             if(game.onlineMode) {
-                game.socket.emit('launchBall');
+                socket.emit('launchBall');
             }
         }
     },
 
+    // TODO: Modifier en fonction du joueur connecté
     onKeyUp: function(event) {
         if(event.code === game.keycode.KEYUPSTRING) {
             game.playerOne.goDown = false;
@@ -36,10 +39,9 @@ game.control = {
         }
     },
 
+    // TODO: Modifier en fonction du joueur connecté
     onMouseMove: function(event) {
         if(game.control.controlSystem === "MOUSE" && game.gameOn) {
-            console.log(event.clientY);
-            console.log(event.clientY - game.conf.MOUSECORRECTIONPOSY);
             if(event){
                 game.control.mousePointer = event.clientY - game.conf.MOUSECORRECTIONPOSY;
             }
@@ -47,13 +49,13 @@ game.control = {
                 game.playerOne.goDown = true;
                 game.playerOne.goUp = false;
                 if(game.onlineMode) {
-                    game.socket.emit('moveDown');
+                    socket.emit('move down');
                 }
             } else if(game.control.mousePointer < game.playerOne.sprite.posY) {
                 game.playerOne.goDown = false;
                 game.playerOne.goUp = true;
                 if(game.onlineMode) {
-                    game.socket.emit('moveUp');
+                    socket.emit('move up');
                 }
             } else {
                 game.playerOne.goDown = false;
@@ -62,8 +64,9 @@ game.control = {
         }
     },
 
+    //
     onStartGameClickButton: function() {
-        if(!game.gameOn && game.control.controlSystem !== null && game.iaMode) {
+        if(!game.gameOn && game.control.controlSystem !== null) {
             game.reinitGame();
             game.gameOn = true;
             game.ball.inGame = true;
@@ -71,8 +74,9 @@ game.control = {
             game.ball.sprite.posY = game.playerOne.sprite.posY;
             game.ball.directionX = 1;
             game.ball.directionY = 1;
+            socket.emit('start game');
         }
-        if (!game.gameOn && game.control.controlSystem !== null && game.onlineMode) {
+        /*if (!game.gameOn && game.control.controlSystem !== null) {
             game.socket = io.connect("http://localhost:2222");
 
             let data = {
@@ -82,11 +86,11 @@ game.control = {
             console.log(data);
             //game.socket.emit('startGame', data);
 
-            game.socket.emit('newPlayer', data);
+            socket.emit('newPlayer', data);
             document.getElementById("description").style.display = 'none';
             document.getElementById("menuMode").style.display = 'none';
             document.getElementById("menuControl").style.display = 'none';
-        }
+        }*/
     },
 
     onMouseControlClickButton: function() {
@@ -96,22 +100,4 @@ game.control = {
     onKeyboardControlClickButton: function() {
         game.control.controlSystem = "KEYBOARD";
     },
-
-    onIAClickButton: function() {
-        if(!game.ball.inGame) {
-            game.iaMode = true;
-            game.onlineMode = false;
-            game.playerOne.ai = false;
-            game.playerTwo.ai = true;
-        }
-    },
-
-    onMultiplayerClickButton: function() {
-        if(!game.ball.inGame) {
-            game.iaMode = false;
-            game.onlineMode = true;
-            game.playerOne.ai = false;
-            game.playerTwo.ai = false;
-        }
-    }
 };

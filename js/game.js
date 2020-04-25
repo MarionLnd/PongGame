@@ -22,11 +22,8 @@ let game = {
     startGameButton: null,
     controlMouseButton: null,
     controlKeyboardButton: null,
-    iaButton: null,
-    multiplayerButton: null,
 
-    onlineMode: false,
-    iaMode: false,
+    players: [],
 
     winner: "",
     loser: "",
@@ -86,7 +83,6 @@ let game = {
         goDown: false,
         originalPosition: "left",
         score: 0,
-        ai: false,
         winner: false,
     },
 
@@ -97,13 +93,14 @@ let game = {
         goDown: false,
         originalPosition: "right",
         score: 0,
-        ai: true,
         winner: false,
     },
 
     init: function () {
         this.initScreenRes();
         this.resizeDisplayData(game.conf, this.ratioResX, this.ratioResY);
+
+        this.socket = io.connect("http://localhost:2222");
 
         this.divGame = document.getElementById("divGame");
         // Terrain
@@ -128,21 +125,27 @@ let game = {
         this.startGameButton = document.getElementById("startGame");
         this.controlMouseButton = document.getElementById("controlMouse");
         this.controlKeyboardButton = document.getElementById("controlKeyboard");
-        this.iaButton = document.getElementById("modeIA");
-        this.multiplayerButton = document.getElementById("modeOnline");
+
+        console.log(game.control);
 
         this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);
         this.initMouse(game.control.onMouseMove);
         this.initStartGameClickButton();
         this.initControlMouseClickButton();
         this.initControlKeyboardClickButton();
-        this.initIAClickButton();
-        this.initMultiplayerClickButton();
 
         this.wallSound = new Audio("./sound/pingMur.ogg");
         this.playerSound = new Audio("./sound/pingRaquette.ogg");
 
-        game.ai.setPlayerAndBall(this.playerTwo, this.ball);
+        console.log(this.socket);
+
+        this.socket.on('players list', (list) => {
+            this.players = list;
+            console.log("in game.js");
+            console.log(this.players);
+        });
+
+
 
         this.speedUpBall();
     },
@@ -154,6 +157,7 @@ let game = {
 
     displayBall: function() {
         game.display.drawImageInLayer(this.playersBallLayer, this.ball.sprite.img, this.ball.sprite.posX, this.ball.sprite.posY, game.conf.BALLWIDTH, game.conf.BALLHEIGHT);
+        //game.display.drawCircleInLayer(this.playersBallLayer, this.ball.sprite.img, this.ball.sprite.posX, this.ball.sprite.posY, game.conf.BALLWIDTH, game.conf.BALLHEIGHT);
     },
 
     displayPlayers: function() {
@@ -161,12 +165,11 @@ let game = {
         game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.sprite.img, this.playerTwo.sprite.posX, this.playerTwo.sprite.posY, game.conf.PLAYERTWOWIDTH, game.conf.PLAYERTWOHEIGHT);
     },
 
-    displayPlayerOne: function(player) {
-        game.display.drawImageInLayer(this.playersBallLayer, this.playerOne.sprite.img, this.playerOne.sprite.posX, this.playerOne.sprite.posY, game.conf.PLAYERONEWIDTH, game.conf.PLAYERONEHEIGHT);
-    },
-
-    displayPlayerTwo: function(player) {
-        game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.sprite.img, this.playerTwo.sprite.posX, this.playerTwo.sprite.posY, game.conf.PLAYERTWOWIDTH, game.conf.PLAYERTWOHEIGHT);
+    displayPlayer: function() {
+        this.players.forEach(({width, height, posX, posY, color}) => {
+            console.log("in loop for");
+            game.display.drawRectangleInLayer(this.playersBallLayer, width, height, color, posX, posY);
+        });
     },
 
     displayWinner: function() {
@@ -179,6 +182,7 @@ let game = {
         this.displayBall();
     },
 
+    // TODO: Modifier les comportements en fonction d'un joueur et pas uniquement le joueur 1
     movePlayers: function() {
         let up;
         let down;
@@ -207,6 +211,7 @@ let game = {
             game.playerOne.sprite.posY+=4;
     },
 
+    // TODO: Modifier en fonction des joueurs connectés
     collideBallWithPlayersAndAction: function() {
         if(this.ball.collide(this.playerOne.sprite)) {
             this.changeBallPath(game.playerOne, game.ball);
@@ -228,9 +233,6 @@ let game = {
                 this.winner = "Player TWO";
             } else {
                 this.ball.inGame = false;
-                if(this.playerOne.ai && game.iaMode) {
-                    setTimeout(game.ai.startBall(), 3000);
-                }
             }
         } else if(this.ball.lost(this.playerTwo)) {
             this.playerOne.score++;
@@ -241,9 +243,6 @@ let game = {
                 this.winner = "Player ONE";
             } else {
                 this.ball.inGame = false;
-                if(this.playerTwo.ai && game.iaMode) {
-                    setTimeout(game.ai.startBall(), 3000);
-                }
             }
         }
         this.scoreLayer.clear();
@@ -374,12 +373,4 @@ let game = {
     initControlKeyboardClickButton: function() {
         this.controlKeyboardButton.onclick = game.control.onKeyboardControlClickButton;
     },
-
-    initIAClickButton: function() {
-        this.iaButton.onclick = game.control.onIAClickButton;
-    },
-
-    initMultiplayerClickButton: function() {
-        this.multiplayerButton.onclick = game.control.onMultiplayerClickButton;
-    }
 };

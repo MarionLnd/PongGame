@@ -96,5 +96,12 @@ game.display = {
 
     drawImageInLayer: function(targetLayer, image, x, y, width, height) {
         targetLayer.context2D.drawImage(image,x ,y, width, height);
+    },
+
+    drawCircleInLayer: function(targetLayer, x, y, color, width, height) {
+        targetLayer.context2D.strokeStyle = color;
+        targetLayer.context2D.fillStyle = color;
+        targetLayer.context2D.arc(targetLayer.width/2, targetLayer.height/2, 45, 0, 2 * Math.PI);
+        targetLayer.context2D.stroke();
     }
 };

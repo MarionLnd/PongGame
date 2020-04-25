@@ -1,5 +1,6 @@
-const app = require('./bin/express')();
+const app = require('./js/express')();
 const socket = require('socket.io');
+const io = require('./js/ioconf');
 const path = require('path');
 let connections = [];
 
@@ -12,7 +13,10 @@ let server = app.listen(2222);
 console.log("Running on port 2222");
 let counterConnections = 0;
 
-let io = socket(server);
+let sockets = io(server);
+
+//let io = socket(server);
+/*
 let currentGame = {
     players: {},
 };
@@ -73,5 +77,5 @@ io.sockets.on('connection', (socket) => {
 // Emets infos jeu 60 fois par secondes
 setInterval(() => {
     io.volatile.emit('state', currentGame);
-}, 1000/60);
+}, 1000/60);*/
 
