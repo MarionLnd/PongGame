@@ -38,55 +38,34 @@
 <script src="js/game.keycode.js"></script>
 <script src="js/game.ai.js"></script>
 <script src="js/game.conf.js"></script>
+<!--<script src="js/ioconf.js"></script>-->
 <script src="/socket.io/socket.io.js"></script>
 <script>
     (function () {
         //let socket = io.connect("http://localhost:2222");
-
         game.init();
 
         function update() {
             game.clearLayer(game.playersBallLayer);
             game.displayPlayer();
-            console.log(game);
+            game.movePlayers();
+            game.moveBall();
+            if(game.ball !== null) {
+                if(game.ball.inGame) {
+                    game.lostBall();
+                }
+            }
+            game.collideBallWithPlayersAndAction();
+            //console.log(game);
+            /*game.collideBallWithPlayersAndAction();
+            if(game.winner !== "" && !game.ball.inGame && !game.gameOn) {
+                game.playersBallLayer.clear();
+                game.displayWinner();
+            }*/
             requestAnimationFrame(update);
         }
 
         requestAnimationFrame(update);
-
-/*
-        let initialization = function () {
-            game.init();
-            window.requestAnimationFrame(main);
-        };
-
-        let main = function() {
-            game.clearLayer(game.playersBallLayer);
-            game.displayPlayers();
-            //game.ai.setPlayerAndBall(game.playerTwo, game.ball);
-
-            game.displayPlayers();
-            game.movePlayers();
-            game.moveBall();
-            if(game.ball.inGame) {
-                game.lostBall();
-            }
-            game.collideBallWithPlayersAndAction();
-            if(game.winner !== "" && !game.ball.inGame && !game.gameOn) {
-                game.playersBallLayer.clear();
-                game.displayWinner();
-            }
-            window.requestAnimationFrame(main);
-        };
-        console.log("mode multijoueur");
-        //game.playersBallLayer.clear();
-        //game.clearLayer(game.playersBallLayer);
-        /*setInterval(() => {
-            game.socket.emit("gameState", game)
-        }, 1000/60);
-
-        window.onload = initialization();*/
-
     })();
 </script>
 </html>
