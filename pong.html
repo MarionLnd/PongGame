@@ -46,18 +46,12 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     (function () {
-        let requestAnimId;
-
-        let initialization = function () {
-            game.init();
-            requestAnimId = window.requestAnimationFrame(main);
-        };
-
-        let socket = game.socket;
+        game.init();
 
         let main = function() {
             game.clearLayer(game.playersBallLayer);
-            if(game.iaMode && !game.onlineMode) {
+
+            //if(game.iaMode && !game.onlineMode) {
                 console.log("mode ia");
                 game.displayPlayers();
                 game.ai.setPlayerAndBall(game.playerTwo, game.ball);
@@ -74,23 +68,24 @@
                     game.playersBallLayer.clear();
                     game.displayWinner();
                 }
-            }/* else if(game.onlineMode && !game.iaMode) {
+            //}
+                 /* else if(game.onlineMode && !game.iaMode) {
                 console.log("mode multijoueur");
                 game.playersBallLayer.clear();
             }*/
-            requestAnimId = window.requestAnimationFrame(main);
+            requestAnimationFrame(main);
         };
 
-        window.onload = initialization();
+        requestAnimationFrame(main);
         
-        if(game.onlineMode && !game.iaMode) {
+        /*if(game.onlineMode && !game.iaMode) {
             console.log("mode multijoueur");
             game.playersBallLayer.clear();
             game.clearLayer(game.scoreLayer);
             setInterval(() => {
                 socket.emit("gameState", game)
             }, 1000/60);
-        }
+        }*/
     })();
 </script>
 </html>

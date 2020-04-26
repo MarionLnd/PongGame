@@ -221,7 +221,7 @@ let game = {
     lostBall: function() {
         if(this.ball.lost(this.playerOne)) {
             this.playerTwo.score++;
-            if(this.playerTwo.score === 2) {
+            if(this.playerTwo.score === 9) {
                 this.gameOn = false;
                 game.ball.inGame = false;
                 this.playerTwo.winner = true;
@@ -380,6 +380,7 @@ let game = {
     },
 
     initMultiplayerClickButton: function() {
+        this.socket = io.connect("http://localhost:2222");
         this.multiplayerButton.onclick = game.control.onMultiplayerClickButton;
     }
 };
