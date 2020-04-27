@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body class="font-weight-light">
-    <h1 class="text-center">Pong Game</h1>
+    <h3 class="text-center">Pong Game</h3>
     <br>
     <div class="container">
         <div id="description">
             <p>
-                Bienvenue sur le jeu PongGame !
-                Il s'agit d'un jeu de Ping Pong sur navigateur. <br> Vous pouvez choisir de jouer contre l'ordinateur (IA) ou contre un autre joueur en ligne (multijoueur). <br>
-                Avant de lancer une partie, vous devez selectionner si vous voulez jouer avec la souris, ou le clavier.
+                Vous pouvez choisir de jouer contre l'ordinateur (IA) ou contre un autre joueur en ligne (multijoueur). <br>
+                Avant de lancer une partie, vous devez sélectionner si vous voulez jouer avec la souris, ou le clavier.
                 Si vous perdez la balle, appuyez sur la touche espace du clavier pour relancer la balle.
             </p>
         </div>
@@ -50,12 +49,9 @@
 
         let main = function() {
             game.clearLayer(game.playersBallLayer);
-
-            //if(game.iaMode && !game.onlineMode) {
-                console.log("mode ia");
+            if(game.iaMode && !game.onlineMode) {
                 game.displayPlayers();
                 game.ai.setPlayerAndBall(game.playerTwo, game.ball);
-
                 game.displayPlayers();
                 game.movePlayers();
                 game.moveBall();
@@ -68,24 +64,22 @@
                     game.playersBallLayer.clear();
                     game.displayWinner();
                 }
-            //}
-                 /* else if(game.onlineMode && !game.iaMode) {
-                console.log("mode multijoueur");
-                game.playersBallLayer.clear();
-            }*/
+            } else if(game.onlineMode) {
+                game.clearLayer(game.playersBallLayer);
+                game.displayOnlinePlayers();
+                game.movePlayerOnline();
+                game.moveBallOnline();
+                if(game.onlineBall !== null) {
+                    if(game.onlineBall.inGame) {
+                        game.lostBall();
+                    }
+                }
+                game.collideBallWithPlayersAndActionOnline();
+            }
             requestAnimationFrame(main);
         };
 
         requestAnimationFrame(main);
-        
-        /*if(game.onlineMode && !game.iaMode) {
-            console.log("mode multijoueur");
-            game.playersBallLayer.clear();
-            game.clearLayer(game.scoreLayer);
-            setInterval(() => {
-                socket.emit("gameState", game)
-            }, 1000/60);
-        }*/
     })();
 </script>
 </html>

@@ -7,12 +7,16 @@ game.control = {
             if(event.code === game.keycode.KEYDOWNSTRING) {
                 game.playerOne.goDown = true;
                 if(game.onlineMode) {
-                    game.socket.emit('moveDown');
+                    if(game.socket !== null) {
+                        game.socket.emit('key down arrow down');
+                    }
                 }
             } else if(event.code === game.keycode.KEYUPSTRING) {
                 game.playerOne.goUp = true;
                 if(game.onlineMode) {
-                    game.socket.emit('moveUp');
+                    if(game.socket !== null) {
+                        game.socket.emit('key down arrow up');
+                    }
                 }
             }
         }
@@ -23,7 +27,9 @@ game.control = {
             game.ball.directionX = 1;
             game.ball.directionY = 1;
             if(game.onlineMode) {
-                game.socket.emit('launchBall');
+                if(game.socket !== null) {
+                    game.socket.emit('launch ball');
+                }
             }
         }
     },
@@ -31,8 +37,18 @@ game.control = {
     onKeyUp: function(event) {
         if(event.code === game.keycode.KEYUPSTRING) {
             game.playerOne.goDown = false;
+            if(game.onlineMode) {
+                if(game.socket !== null) {
+                    game.socket.emit('key up arrow up');
+                }
+            }
         } else if(event.code === game.keycode.KEYDOWNSTRING) {
             game.playerOne.goUp = false;
+            if(game.onlineMode) {
+                if(game.socket !== null) {
+                    game.socket.emit('key up arrow down');
+                }
+            }
         }
     },
 
@@ -43,23 +59,37 @@ game.control = {
             if(event){
                 game.control.mousePointer = event.clientY - game.conf.MOUSECORRECTIONPOSY;
             }
-            if(game.control.mousePointer > game.playerOne.sprite.posY) {
-                game.playerOne.goDown = true;
-                game.playerOne.goUp = false;
-                if(game.onlineMode) {
-                    game.socket.emit('moveDown');
+            if(game.iaMode) {
+                if(game.control.mousePointer > game.playerOne.sprite.posY) {
+                    game.playerOne.goDown = true;
+                    game.playerOne.goUp = false;
+                } else if(game.control.mousePointer < game.playerOne.sprite.posY) {
+                    game.playerOne.goDown = false;
+                    game.playerOne.goUp = true;
+                } else {
+                    game.playerOne.goDown = false;
+                    game.playerOne.goUp = true;
                 }
-            } else if(game.control.mousePointer < game.playerOne.sprite.posY) {
-                game.playerOne.goDown = false;
-                game.playerOne.goUp = true;
-                if(game.onlineMode) {
-                    game.socket.emit('moveUp');
+            } else if(game.onlineMode) {
+                if(game.onlinePlayers !== null) {
+                    game.onlinePlayers.forEach((player) => {
+                        if(game.control.mousePointer > player.posY) {
+                            if(game.socket !== null) {
+                                game.socket.emit('mouse move down');
+                            }
+                        } else if(game.control.mousePointer < player.posY) {
+                            if(game.socket !== null) {
+                                game.socket.emit('mouse move up');
+                            }
+                        } else {
+                            player.goDown = false;
+                            player.goUp = true;
+                        }
+                    })
                 }
-            } else {
-                game.playerOne.goDown = false;
-                game.playerOne.goUp = true;
             }
         }
+
     },
 
     onStartGameClickButton: function() {
@@ -73,19 +103,7 @@ game.control = {
             game.ball.directionY = 1;
         }
         if (!game.gameOn && game.control.controlSystem !== null && game.onlineMode) {
-            game.socket = io.connect("http://localhost:2222");
-
-            let data = {
-                id: '_' + Math.random().toString(36).substr(2, 5),
-                player: game.playerOne
-            };
-            console.log(data);
-            //game.socket.emit('startGame', data);
-
-            game.socket.emit('newPlayer', data);
-            document.getElementById("description").style.display = 'none';
-            document.getElementById("menuMode").style.display = 'none';
-            document.getElementById("menuControl").style.display = 'none';
+            game.socket.emit('start game');
         }
     },
 
@@ -103,6 +121,7 @@ game.control = {
             game.onlineMode = false;
             game.playerOne.ai = false;
             game.playerTwo.ai = true;
+            game.socket.emit('change mode disconnection');
         }
     },
 
@@ -112,6 +131,9 @@ game.control = {
             game.onlineMode = true;
             game.playerOne.ai = false;
             game.playerTwo.ai = false;
+            if(game.socket.socket !== undefined) {
+                game.socket.socket.connect();
+            }
         }
     }
 };

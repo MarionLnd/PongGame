@@ -32,6 +32,8 @@ let game = {
     loser: "",
 
     socket: null,
+    onlinePlayers: [],
+    onlineBall: null,
 
     ball: {
         sprite: null,
@@ -102,8 +104,8 @@ let game = {
     },
 
     init: function () {
-        this.initScreenRes();
-        this.resizeDisplayData(game.conf, this.ratioResX, this.ratioResY);
+        //this.initScreenRes();
+        //this.resizeDisplayData(game.conf, this.ratioResX, this.ratioResY);
 
         this.divGame = document.getElementById("divGame");
         // Terrain
@@ -116,7 +118,7 @@ let game = {
         // Raquette
         this.playersBallLayer = game.display.createLayer("joueurSetBalle", game.conf.GROUNDLAYERWIDTH, game.conf.GROUNDLAYERHEIGHT, this.divGame, 2, undefined, 0, 0);
 
-        this.displayScore(this.playerOne.score,this.playerTwo.score);
+        this.displayScore(0, 0);
 
         this.ball.sprite = game.display.createSprite(game.conf.BALLWIDTH,game.conf.BALLHEIGHT, game.conf.BALLPOSX, game.conf.BALLPOSY, "./img/ball.png");
         this.displayBall();
@@ -144,6 +146,13 @@ let game = {
 
         game.ai.setPlayerAndBall(this.playerTwo, this.ball);
 
+        if(this.socket !== null) {
+            this.socket.on('players list', (list, ball) => {
+                this.onlinePlayers = list;
+                this.onlineBall = ball;
+            });
+        }
+
         this.speedUpBall();
     },
 
@@ -153,7 +162,13 @@ let game = {
     },
 
     displayBall: function() {
-        game.display.drawImageInLayer(this.playersBallLayer, this.ball.sprite.img, this.ball.sprite.posX, this.ball.sprite.posY, game.conf.BALLWIDTH, game.conf.BALLHEIGHT);
+        if(game.iaMode) {
+            game.display.drawImageInLayer(this.playersBallLayer, this.ball.sprite.img, this.ball.sprite.posX, this.ball.sprite.posY, game.conf.BALLWIDTH, game.conf.BALLHEIGHT);
+        } else if(game.onlineMode) {
+            if(this.onlineBall !== null) {
+                game.display.drawRectangleInLayer(this.playersBallLayer, this.onlineBall.width, this.onlineBall.height, this.onlineBall.color, this.onlineBall.posX, this.onlineBall.posY);
+            }
+        }
     },
 
     displayPlayers: function() {
@@ -161,12 +176,11 @@ let game = {
         game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.sprite.img, this.playerTwo.sprite.posX, this.playerTwo.sprite.posY, game.conf.PLAYERTWOWIDTH, game.conf.PLAYERTWOHEIGHT);
     },
 
-    displayPlayerOne: function(player) {
-        game.display.drawImageInLayer(this.playersBallLayer, this.playerOne.sprite.img, this.playerOne.sprite.posX, this.playerOne.sprite.posY, game.conf.PLAYERONEWIDTH, game.conf.PLAYERONEHEIGHT);
-    },
-
-    displayPlayerTwo: function(player) {
-        game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.sprite.img, this.playerTwo.sprite.posX, this.playerTwo.sprite.posY, game.conf.PLAYERTWOWIDTH, game.conf.PLAYERTWOHEIGHT);
+    displayOnlinePlayers: function() {
+        //console.log(this.onlinePlayers);
+        this.onlinePlayers.forEach(({width, height, posX, posY, color}) => {
+            game.display.drawRectangleInLayer(this.playersBallLayer, width, height, color, posX, posY);
+        });
     },
 
     displayWinner: function() {
@@ -176,6 +190,12 @@ let game = {
     moveBall: function () {
         this.ball.move();
         this.ball.bounce(this.wallSound);
+        this.displayBall();
+    },
+
+    moveBallOnline: function() {
+        this.socket.emit('ball move');
+        this.socket.emit('ball bounce', this.wallSound);
         this.displayBall();
     },
 
@@ -207,6 +227,45 @@ let game = {
             game.playerOne.sprite.posY+=4;
     },
 
+    movePlayerOnline: function() {
+        let up;
+        let down;
+
+        if (game.control.controlSystem === "KEYBOARD") {
+            this.onlinePlayers.forEach((player) => {
+                if(player.id === this.socket.id){
+                    if(player.goUp) {
+                        up = true;
+                        down = false;
+                    } else if(player.goDown) {
+                        up = false;
+                        down = true;
+                    }
+                }
+            });
+        } else if (game.control.controlSystem === "MOUSE") {
+            this.onlinePlayers.forEach((player) => {
+                if(player.id === this.socket.id){
+                    if(player.goUp && player.posY > game.control.mousePointer) {
+                        up = true;
+                        down = false;
+                    } else if(player.goDown && player.posY < game.control.mousePointer) {
+                        up = false;
+                        down = true;
+                    }
+                }
+            });
+        }
+
+        this.onlinePlayers.forEach((player) => {
+            if (up && player.posY > 0){
+                this.socket.emit('move up');
+            } else if (down && player.posY < (350 - player.height)){
+                this.socket.emit('move down');
+            }
+        });
+    },
+
     collideBallWithPlayersAndAction: function() {
         if(this.ball.collide(this.playerOne.sprite)) {
             this.changeBallPath(game.playerOne, game.ball);
@@ -215,6 +274,41 @@ let game = {
         if(this.ball.collide(this.playerTwo.sprite)) {
             this.changeBallPath(game.playerTwo, game.ball);
             this.playerSound.play();
+        }
+    },
+
+    collideBallWithPlayersAndActionOnline: function() {
+        let p1; // left
+        let p2; // right
+        let counter = 0;
+        if(this.onlineBall !== null) {
+            if(this.onlineBall.inGame) {
+                this.onlinePlayers.forEach((player) => {
+                    if(player.originalPosition === "left"){
+                        p1 = player;
+                        counter++;
+                    } else {
+                        p2 = player;
+                        counter++;
+                    }
+                    console.log(counter);
+                });
+                console.log(counter);
+                if(p1 !== undefined) {
+                    if(!(this.onlineBall.posX >= p1.posX + p1.width || this.onlineBall.posX <= p1.posX - p1.width || this.onlineBall.posY >= p1.posY + p1.height || this.onlineBall.posY <= p1.posY - p1.height)) {
+                        console.log(p1);
+                        this.changeBallPath(p1, this.onlineBall);
+                        this.playerSound.play();
+                    }
+                }
+                if(p2 !== undefined) {
+                    if(!(this.onlineBall.posX >= p2.posX + p2.width || this.onlineBall.posX <= p2.posX - p2.width || this.onlineBall.posY >= p2.posY + p2.height || this.onlineBall.posY <= p2.posY - p2.height)) {
+                        console.log(p2);
+                        this.changeBallPath(p2, this.onlineBall);
+                        this.playerSound.play();
+                    }
+                }
+            }
         }
     },
 
@@ -228,7 +322,7 @@ let game = {
                 this.winner = "Player TWO";
             } else {
                 this.ball.inGame = false;
-                if(this.playerOne.ai && game.iaMode) {
+                if(this.playerOne.ai) {
                     setTimeout(game.ai.startBall(), 3000);
                 }
             }
@@ -241,7 +335,7 @@ let game = {
                 this.winner = "Player ONE";
             } else {
                 this.ball.inGame = false;
-                if(this.playerTwo.ai && game.iaMode) {
+                if(this.playerTwo.ai) {
                     setTimeout(game.ai.startBall(), 3000);
                 }
             }
@@ -377,6 +471,7 @@ let game = {
 
     initIAClickButton: function() {
         this.iaButton.onclick = game.control.onIAClickButton;
+        //this.socket.disconnect();
     },
 
     initMultiplayerClickButton: function() {

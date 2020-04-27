@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4031ee01-19bb-4e6c-9a96-10ff9643c451" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pong.html" beforeDir="false" afterPath="$PROJECT_DIR$/pong.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/game.control.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.control.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/ioconf.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/ioconf.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,10 +108,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="28" y="-14" width="1316" height="806" key="dock-window-1/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587048178891" />
-    <state x="2312" y="0" width="759" height="824" key="find.popup" timestamp="1587661128346">
+    <state x="2312" y="0" width="761" height="824" key="find.popup" timestamp="1588018759457">
       <screen x="1920" y="0" width="1536" height="824" />
     </state>
-    <state x="2312" y="0" width="759" height="824" key="find.popup/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1587661128346" />
+    <state x="2312" y="0" width="761" height="824" key="find.popup/1920.0.1536.824/0.0.1536.824@1920.0.1536.824" timestamp="1588018759457" />
     <state x="2345" y="187" key="run.anything.popup" timestamp="1587490826452">
       <screen x="1920" y="0" width="1536" height="824" />
     </state>

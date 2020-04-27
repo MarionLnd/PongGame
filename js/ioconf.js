@@ -26,7 +26,7 @@ module.exports = function(server) {
         });
         ball = balls[0];
 
-        console.log(balls[0]);
+        console.log(players);
 
         if(Object.keys(players).length === 0) {
             players[socket.id] = {
@@ -45,8 +45,8 @@ module.exports = function(server) {
         }
 
         for(playerId in players) {
-            //if(Object.keys(players).length === 1){// && Object.keys(players).length < 2) {
-            if(Object.keys(players).length >= 0 && Object.keys(players).length < 2) {
+            if(Object.keys(players).length === 1){// && Object.keys(players).length < 2) {
+            //if(Object.keys(players).length >= 0 && Object.keys(players).length < 2) {
                 if (players[playerId].originalPosition === "left") {
                     players[socket.id] = {
                         id: socket.id,
@@ -80,9 +80,7 @@ module.exports = function(server) {
         }
 
         // Start the game (by clicking the button)
-        socket.on('start game', () => {
-            console.log("start game");
-
+        socket.on('start game', () =>{
             if(ball !== null && players[socket.id] !== undefined) {
                 if(Object.keys(players).length === 2) {
                     for(playerId in players) {
@@ -110,7 +108,7 @@ module.exports = function(server) {
 
         // Lancer/relancer la balle
         socket.on('launch ball', () => {
-            if(ball !== null){// && !ball.inGame) {
+            if(ball !== null && !ball.inGame) {
                 // GOOD
                 if(players[socket.id] !== undefined) {
                     if(!ball.inGame){
@@ -142,7 +140,7 @@ module.exports = function(server) {
         });
         socket.on('move down', () => {
             if(players[socket.id] !== undefined) {
-                if(players[socket.id].posY < (400 - players[socket.id].height) ){
+                if(players[socket.id].posY < (350 - players[socket.id].height) ){
                     players[socket.id].posY += 4;
                 }
             }
@@ -189,7 +187,7 @@ module.exports = function(server) {
                     if(ball.posX < 700 || ball.posX > 0){
                         ball.posX += ball.directionX * ball.speed;
                     }
-                    if(ball.posY + ball.height < 400 || ball.posY > 0) {
+                    if(ball.posY + ball.height < 350 || ball.posY > 0) {
                         ball.posY += ball.directionY * ball.speed;
                     }
                 }
@@ -201,7 +199,7 @@ module.exports = function(server) {
                 if(ball.posX > 700 || ball.posX < 0){
                     ball.directionX = -ball.directionX;
                 }
-                if(ball.posY + ball.height > 400 || ball.posY < 0) {
+                if(ball.posY + ball.height > 350 || ball.posY < 0) {
                     ball.directionY = -ball.directionY;
                 }
             }
@@ -245,6 +243,14 @@ module.exports = function(server) {
         socket.on('start game', () => {});
         socket.on('start game', () => {});
         */
+
+        socket.on('change mode disconnection', () => {
+            console.log("A user has been disconnected after changing mode: " + socket.id);
+            delete players[socket.id];
+            balls.pop();
+            ball.inGame = false;
+            console.log(players);
+        });
 
         socket.on('disconnect', () => {
             console.log("A user has been disconnected: " + socket.id);
